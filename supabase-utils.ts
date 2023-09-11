@@ -7,8 +7,13 @@ const supabase = createClient(url, key);
 
 async function getAllPokemon() {
   const { data } = await supabase.from("pokemon").select("*");
+  return data;
+}
+
+async function getPokemonById(id = 1) {
+  const { data } = await supabase.from("pokemon").select("*").eq("id", id);
   console.log("data", data);
   return data;
 }
 
-export { getAllPokemon };
+export { getAllPokemon, getPokemonById };
