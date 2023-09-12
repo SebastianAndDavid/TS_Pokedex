@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { getAllPokemon, getPokemonById } from "../supabase-utils";
+import { useState, useEffect } from "react";
+import { PokemonResponse, PokemonResponseById } from "./interfaces";
+import PokemonCard from "./components/PokemonCard";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [allPokemon, setAllPokemon] = useState<PokemonResponse[] | null>([]);
+  const [clickedPokemon, setClickedPokemon] = useState<
+    PokemonResponse[] | null
+  >([]);
+  // const [clickedPokemonArray, setClickedPokemonArray] = useState<
+  //   PokemonResponse[] | null
+  // >([]);
+
+  async function handleGetAllPokemon() {
+    const res = await getAllPokemon();
+    setAllPokemon(res);
+  }
+
+  async function handlePokemonClick(id: number) {
+    // endpoint w/ id
+    const res: PokemonResponseById = await getPokemonById(id);
+    // set that res in state, ...spread
+    // const newState: PokemonResponse[] | null = [...[clickedPokemon], res];
+    if (clickedPokemon != null) {
+      setClickedPokemon([res, ...clickedPokemon]);
+    }
+
+    // map over that state (clickedPokemon)
+  }
+
+  useEffect(() => {
+    handleGetAllPokemon();
+    // if (clickedPokemonArray != null && clickedPokemon != null) {
+    //   setClickedPokemonArray([clickedPokemon, ...clickedPokemonArray]);
+    // }
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="pokemon-list-container">
+      {allPokemon &&
+        allPokemon.map((poke, i) => {
+          return (
+            <div>
+              <PokemonCard key={poke.id + i} allPokemon={poke} />;
+            </div>
+          );
+        })}
+    </div>
+  );
 }
 
-export default App
+export default App;
