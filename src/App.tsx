@@ -2,7 +2,7 @@ import "./components/pokemon.css";
 import "./App.css";
 import { getAllPokemon, getPokemonById } from "../supabase-utils";
 import { useState, useEffect } from "react";
-import { PokemonResponse } from "./interfaces";
+import { PokemonResponse, PracticeType } from "./interfaces";
 import PokemonCard from "./components/PokemonCard";
 import ClickedCard from "./components/ClickedCard";
 
@@ -25,6 +25,11 @@ function App() {
     }
   }
 
+  function practiceFunc(name: string, obj: PracticeType) {
+    const greet = `hello ${name}. you are from ${obj.city} in the state of ${obj.state} and your zip is ${obj.zip}`;
+    return greet;
+  }
+
   useEffect(() => {
     handleGetAllPokemon();
   }, []);
@@ -38,6 +43,7 @@ function App() {
               key={poke.id + i}
               allPokemon={poke}
               handlePokemonClick={handlePokemonClick}
+              practiceFunc={practiceFunc}
             />
           );
         })}

@@ -12,3 +12,9 @@ export interface PokemonResponse {
   png: string;
   description: string;
 }
+
+export interface PracticeType {
+  city: string;
+  state: string;
+  zip: number;
+}

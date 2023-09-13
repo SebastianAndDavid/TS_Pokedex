@@ -1,11 +1,13 @@
-import { PokemonResponse } from "../interfaces";
+import { PokemonResponse, PracticeType } from "../interfaces";
 
 interface PokemonCardProps {
   allPokemon: PokemonResponse;
   handlePokemonClick: (id: number) => void;
+  practiceFunc: (name: string, obj: PracticeType) => void;
 }
 
 export default function PokemonCard(props: PokemonCardProps) {
+  props.practiceFunc("bob", { city: "Porltand", state: "Oregon", zip: 97232 });
   return (
     <>
       <div

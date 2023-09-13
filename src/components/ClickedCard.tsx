@@ -4,10 +4,10 @@ interface ClickedProps {
   poke: PokemonResponse;
 }
 
-export default function ClickedCard(props: ClickedProps) {
+export default function ClickedCard({ poke }: ClickedProps) {
   return (
     <div className="clicked-card">
-      {props.poke.id} {props.poke.name}
+      {poke.id} {poke.name}
     </div>
   );
 }
