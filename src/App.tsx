@@ -1,14 +1,17 @@
 import "./App.css";
 import { getAllPokemon, getPokemonById } from "../supabase-utils";
 import { useState, useEffect } from "react";
-import { PokemonResponse } from "./interfaces";
+import { PokemonResponse, PokemonResponseById } from "./interfaces";
 import PokemonCard from "./components/PokemonCard";
 
 function App() {
   const [allPokemon, setAllPokemon] = useState<PokemonResponse[] | null>([]);
   const [clickedPokemon, setClickedPokemon] = useState<
-    PokemonResponse[] | null
-  >([]);
+    PokemonResponseById[] | null
+  >(null);
+  // const [clickedPokemonArray, setClickedPokemonArray] = useState<
+  //   PokemonResponse[]
+  // >([]);
 
   async function handleGetAllPokemon() {
     const res = await getAllPokemon();
@@ -16,13 +19,20 @@ function App() {
   }
 
   async function handlePokemonClick(id: number) {
-    const res: PokemonResponse[] | null = await getPokemonById(id);
-    setClickedPokemon([res, ...clickedPokemon]);
+    const res: PokemonResponseById[] | null = await getPokemonById(id);
+    console.log("res", res);
+    if (res !== null && res.length > 0) {
+      const clickedObject = res[0];
+      setClickedPokemon([clickedObject, ...(clickedPokemon || [])]);
+    }
+    return "hi";
   }
+
   console.log("clickedPokemon", clickedPokemon);
 
   useEffect(() => {
     handleGetAllPokemon();
+    handlePokemonClick(1);
   }, []);
 
   return (
