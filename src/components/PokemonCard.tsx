@@ -1,25 +1,26 @@
-import { PokemonResponse, PracticeType } from "../interfaces";
+import { PokemonResponse } from "../interfaces";
 
 interface PokemonCardProps {
   allPokemon: PokemonResponse;
   handlePokemonClick: (id: number) => void;
-  practiceFunc: (name: string, obj: PracticeType) => void;
 }
 
-export default function PokemonCard(props: PokemonCardProps) {
-  props.practiceFunc("bob", { city: "Porltand", state: "Oregon", zip: 97232 });
+export default function PokemonCard({
+  allPokemon,
+  handlePokemonClick,
+}: PokemonCardProps) {
   return (
     <>
       <div
         className="pokemon-card"
-        onClick={() => props.handlePokemonClick(props.allPokemon.id)}
+        onClick={() => handlePokemonClick(allPokemon.id)}
       >
-        <div>{props.allPokemon.id}</div>
-        <div>{props.allPokemon.name}</div>
-        <div>{props.allPokemon.type1}</div>
-        <div>{props.allPokemon.type2}</div>
-        <img src={props.allPokemon.png} />
-        <div>{props.allPokemon.description}</div>
+        <div>{allPokemon.id}</div>
+        <div>{allPokemon.name}</div>
+        <div>{allPokemon.type1}</div>
+        <div>{allPokemon.type2}</div>
+        <img src={allPokemon.png} />
+        <div>{allPokemon.description}</div>
       </div>
     </>
   );

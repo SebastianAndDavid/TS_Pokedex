@@ -1,13 +1,13 @@
-import { PokemonResponse } from "../interfaces";
+import { ClickedPokemonResponse } from "../interfaces";
 
 interface ClickedProps {
-  poke: PokemonResponse;
+  poke: ClickedPokemonResponse;
 }
 
 export default function ClickedCard({ poke }: ClickedProps) {
   return (
     <div className="clicked-card">
-      {poke.id} {poke.name}
+      {poke.id} {poke.name} <img src={poke.gif} /> {poke.uniqId}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import "./components/pokemon.css";
 import "./App.css";
 import { getAllPokemon, getPokemonById } from "../supabase-utils";
 import { useState, useEffect } from "react";
-import { PokemonResponse, PracticeType } from "./interfaces";
+import { PokemonResponse } from "./interfaces";
 import PokemonCard from "./components/PokemonCard";
 import ClickedCard from "./components/ClickedCard";
 
@@ -25,10 +25,12 @@ function App() {
     }
   }
 
-  function practiceFunc(name: string, obj: PracticeType) {
-    const greet = `hello ${name}. you are from ${obj.city} in the state of ${obj.state} and your zip is ${obj.zip}`;
-    return greet;
-  }
+  // delete a clicked pokemon
+  // could extend interface to include uniq id for the clicked poke
+  // JSX
+  // in the map, spread the {obj} and ADD the new uniqId: #
+  // interface ClickedPokemonResponse EXTENDS PokemonResponse w/ the uniqId: #
+  // onClick of the 'clicked' poke, we .filter the poke and only return the poke != poke.uniqId
 
   useEffect(() => {
     handleGetAllPokemon();
@@ -43,14 +45,19 @@ function App() {
               key={poke.id + i}
               allPokemon={poke}
               handlePokemonClick={handlePokemonClick}
-              practiceFunc={practiceFunc}
             />
           );
         })}
       </div>
       <div className="clicked-list-container">
         {clickedPokemon?.map((poke, i) => {
-          return <ClickedCard key={poke.name + i} poke={poke} />;
+          const uniqPokemon = {
+            uniqId: Math.random() * 1000,
+            ...poke,
+          };
+          return (
+            <ClickedCard key={uniqPokemon.uniqId + i} poke={uniqPokemon} />
+          );
         })}
       </div>
     </>
