@@ -1,9 +1,11 @@
 import { PokemonResponse } from "../interfaces";
 
-export default function PokemonCard(props: {
+interface PokemonCardProps {
   allPokemon: PokemonResponse;
-  handlePokemonClick(id: number): Promise<void>;
-}) {
+  handlePokemonClick: (id: number) => void;
+}
+
+export default function PokemonCard(props: PokemonCardProps) {
   return (
     <>
       <div
