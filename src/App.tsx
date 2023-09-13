@@ -2,14 +2,14 @@ import "./components/pokemon.css";
 import "./App.css";
 import { getAllPokemon, getPokemonById } from "../supabase-utils";
 import { useState, useEffect } from "react";
-import { PokemonResponse } from "./interfaces";
+import { ClickedPokemonResponse, PokemonResponse } from "./interfaces";
 import PokemonCard from "./components/PokemonCard";
 import ClickedCard from "./components/ClickedCard";
 
 function App() {
   const [allPokemon, setAllPokemon] = useState<PokemonResponse[] | null>([]);
   const [clickedPokemon, setClickedPokemon] = useState<
-    PokemonResponse[] | null
+    ClickedPokemonResponse[] | null
   >(null);
 
   async function handleGetAllPokemon() {
@@ -21,16 +21,13 @@ function App() {
     const res: PokemonResponse[] | null = await getPokemonById(id);
     if (res !== null && res.length > 0) {
       const clickedObject = res[0];
-      setClickedPokemon([clickedObject, ...(clickedPokemon || [])]);
+      const newClickedObject = {
+        uniqId: Math.random() * 1000,
+        ...clickedObject,
+      };
+      setClickedPokemon([newClickedObject, ...(clickedPokemon || [])]);
     }
   }
-
-  // delete a clicked pokemon
-  // could extend interface to include uniq id for the clicked poke
-  // JSX
-  // in the map, spread the {obj} and ADD the new uniqId: #
-  // interface ClickedPokemonResponse EXTENDS PokemonResponse w/ the uniqId: #
-  // onClick of the 'clicked' poke, we .filter the poke and only return the poke != poke.uniqId
 
   useEffect(() => {
     handleGetAllPokemon();
@@ -51,12 +48,13 @@ function App() {
       </div>
       <div className="clicked-list-container">
         {clickedPokemon?.map((poke, i) => {
-          const uniqPokemon = {
-            uniqId: Math.random() * 1000,
-            ...poke,
-          };
           return (
-            <ClickedCard key={uniqPokemon.uniqId + i} poke={uniqPokemon} />
+            <ClickedCard
+              key={poke.uniqId + i}
+              poke={poke}
+              clickedPokemon={clickedPokemon}
+              setClickedPokemon={setClickedPokemon}
+            />
           );
         })}
       </div>
