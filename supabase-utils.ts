@@ -10,9 +10,9 @@ async function getAllPokemon() {
   return data;
 }
 
-async function getPokemonById(id = 1) {
+async function getPokemonById(id: number) {
   const { data } = await supabase.from("pokemon").select("*").eq("id", id);
-  console.log("data", data);
+
   return data;
 }
 

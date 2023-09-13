@@ -1,9 +1,15 @@
 import { PokemonResponse } from "../interfaces";
 
-export default function PokemonCard(props: { allPokemon: PokemonResponse }) {
+export default function PokemonCard(props: {
+  allPokemon: PokemonResponse;
+  handlePokemonClick(id: number): Promise<void>;
+}) {
   return (
     <>
-      <div className="pokemon-card">
+      <div
+        className="pokemon-card"
+        onClick={() => props.handlePokemonClick(props.allPokemon.id)}
+      >
         <div>{props.allPokemon.id}</div>
         <div>{props.allPokemon.name}</div>
         <div>{props.allPokemon.type1}</div>
