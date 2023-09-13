@@ -20,12 +20,11 @@ function App() {
   async function handlePokemonClick(id: number) {
     const res: PokemonResponse[] | null = await getPokemonById(id);
     if (res !== null && res.length > 0) {
-      const clickedObject = res[0];
-      const newClickedObject = {
+      const clickedPokemonObject = {
         uniqId: Math.random() * 1000,
-        ...clickedObject,
+        ...res[0],
       };
-      setClickedPokemon([newClickedObject, ...(clickedPokemon || [])]);
+      setClickedPokemon([clickedPokemonObject, ...(clickedPokemon || [])]);
     }
   }
 
@@ -40,7 +39,7 @@ function App() {
           return (
             <PokemonCard
               key={poke.id + i}
-              allPokemon={poke}
+              poke={poke}
               handlePokemonClick={handlePokemonClick}
             />
           );
