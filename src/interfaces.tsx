@@ -3,12 +3,11 @@ export interface PokemonResponse {
   name: string;
   type1: string;
   type2: string;
-  hp: number;
-  attack: number;
-  defense: number;
-  speed: number;
-  special: number;
   gif: string;
   png: string;
   description: string;
+}
+
+export interface ClickedPokemonResponse extends PokemonResponse {
+  uniqId: number;
 }

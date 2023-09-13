@@ -2,14 +2,14 @@ import "./components/pokemon.css";
 import "./App.css";
 import { getAllPokemon, getPokemonById } from "../supabase-utils";
 import { useState, useEffect } from "react";
-import { PokemonResponse } from "./interfaces";
+import { ClickedPokemonResponse, PokemonResponse } from "./interfaces";
 import PokemonCard from "./components/PokemonCard";
 import ClickedCard from "./components/ClickedCard";
 
 function App() {
   const [allPokemon, setAllPokemon] = useState<PokemonResponse[] | null>([]);
   const [clickedPokemon, setClickedPokemon] = useState<
-    PokemonResponse[] | null
+    ClickedPokemonResponse[] | null
   >(null);
 
   async function handleGetAllPokemon() {
@@ -20,8 +20,11 @@ function App() {
   async function handlePokemonClick(id: number) {
     const res: PokemonResponse[] | null = await getPokemonById(id);
     if (res !== null && res.length > 0) {
-      const clickedObject = res[0];
-      setClickedPokemon([clickedObject, ...(clickedPokemon || [])]);
+      const clickedPokemonObject = {
+        uniqId: Math.random() * 1000,
+        ...res[0],
+      };
+      setClickedPokemon([clickedPokemonObject, ...(clickedPokemon || [])]);
     }
   }
 
@@ -36,7 +39,7 @@ function App() {
           return (
             <PokemonCard
               key={poke.id + i}
-              allPokemon={poke}
+              poke={poke}
               handlePokemonClick={handlePokemonClick}
             />
           );
@@ -44,7 +47,14 @@ function App() {
       </div>
       <div className="clicked-list-container">
         {clickedPokemon?.map((poke, i) => {
-          return <ClickedCard key={poke.name + i} poke={poke} />;
+          return (
+            <ClickedCard
+              key={poke.uniqId + i}
+              poke={poke}
+              clickedPokemon={clickedPokemon}
+              setClickedPokemon={setClickedPokemon}
+            />
+          );
         })}
       </div>
     </>
