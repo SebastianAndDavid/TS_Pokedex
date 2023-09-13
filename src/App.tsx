@@ -1,17 +1,16 @@
+import "./components/pokemon.css";
 import "./App.css";
 import { getAllPokemon, getPokemonById } from "../supabase-utils";
 import { useState, useEffect } from "react";
-import { PokemonResponse, PokemonResponseById } from "./interfaces";
+import { PokemonResponse } from "./interfaces";
 import PokemonCard from "./components/PokemonCard";
+import ClickedCard from "./components/ClickedCard";
 
 function App() {
   const [allPokemon, setAllPokemon] = useState<PokemonResponse[] | null>([]);
   const [clickedPokemon, setClickedPokemon] = useState<
-    PokemonResponseById[] | null
+    PokemonResponse[] | null
   >(null);
-  // const [clickedPokemonArray, setClickedPokemonArray] = useState<
-  //   PokemonResponse[]
-  // >([]);
 
   async function handleGetAllPokemon() {
     const res = await getAllPokemon();
@@ -19,20 +18,15 @@ function App() {
   }
 
   async function handlePokemonClick(id: number) {
-    const res: PokemonResponseById[] | null = await getPokemonById(id);
-    console.log("res", res);
+    const res: PokemonResponse[] | null = await getPokemonById(id);
     if (res !== null && res.length > 0) {
       const clickedObject = res[0];
       setClickedPokemon([clickedObject, ...(clickedPokemon || [])]);
     }
-    return "hi";
   }
-
-  console.log("clickedPokemon", clickedPokemon);
 
   useEffect(() => {
     handleGetAllPokemon();
-    handlePokemonClick(1);
   }, []);
 
   return (
@@ -40,15 +34,17 @@ function App() {
       <div className="pokemon-list-container">
         {allPokemon?.map((poke, i) => {
           return (
-            <div>
-              <PokemonCard
-                key={poke.id + i}
-                allPokemon={poke}
-                handlePokemonClick={handlePokemonClick}
-              />
-              ;
-            </div>
+            <PokemonCard
+              key={poke.id + i}
+              allPokemon={poke}
+              handlePokemonClick={handlePokemonClick}
+            />
           );
+        })}
+      </div>
+      <div className="clicked-list-container">
+        {clickedPokemon?.map((poke, i) => {
+          return <ClickedCard key={poke.name + i} poke={poke} />;
         })}
       </div>
     </>
